@@ -12,14 +12,16 @@ import (
 var DB *gorm.DB
 
 func Konekdb() {
-	err := godotenv.Load()
+	err := godotenv.Load("init.env") //Load file env
 	if err != nil {
-		log.Fatal("Tidak bisa load file env")
+		log.Fatal("Konekdb > error load init.env")
 	}
-	dsn := os.Getenv("dsn")
-	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := os.Getenv("dsn") //Cek "dsn" from env file
+
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) //Open Database from MySql
 	if err != nil {
-		panic("Tidak bisa terkoneksi ke database")
+		panic("Konekdb > error open database from MySql")
 	}
+
 	DB = database
 }
