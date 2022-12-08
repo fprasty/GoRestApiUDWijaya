@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/fprasty/GoRestApiUDWijaya/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,17 +12,19 @@ import (
 
 var DB *gorm.DB
 
-func Konekdb() {
-	err := godotenv.Load("init.env") //Load file env
+func KonekDB() {
+	err := godotenv.Load("init.env")
 	if err != nil {
-		log.Fatal("Konekdb > error load init.env")
+		log.Fatal("KonekDB>Can't open init.env")
 	}
-	dsn := os.Getenv("dsn") //Cek "dsn" from env file
-
-	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) //Open Database from MySql
+	dsn := os.Getenv("DSN")
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("Konekdb > error open database from MySql")
+		panic("KonekDB>Database can't loaded")
 	}
-
 	DB = database
+
+	database.AutoMigrate(
+		&models.User{},
+	)
 }
